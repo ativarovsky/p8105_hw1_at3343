@@ -1,0 +1,59 @@
+---
+title: "P8105 Homework 1"
+author: "Alice Tivarovsky"
+date: 2019-09-12
+output: github_document
+---
+
+# Problem 1
+
+We are creating a dataframe composed of a sample vector, logical vector, character vector, and factor vector. 
+
+```{r data_frame_hw}
+library(tidyverse)
+
+prob_1 = tibble(
+  vec_samp = rnorm(8),
+  vec_logical = vec_samp > 0,
+  vec_char = c("one", "two", "three", "four", "five", "six", "seven", "eight"),
+  vec_factor = factor(c("level1", "level1", "level1", "level2", "level2", "level2", "level3", "level3"))
+)
+
+mean(pull(prob_1, vec_samp))
+mean(pull(prob_1, vec_logical))
+mean(pull(prob_1, vec_char))
+mean(pull(prob_1, vec_factor))
+```
+
+Taking the mean for the numeric vector and logical vector returns results. Taking the mean for the character vector and the factor vector returns errors. 
+
+
+This is a second code chunk for problem 1. It coerces the  logical, character, and factor vectors to numeric vectors:
+```{r data_frame_2}
+
+as.numeric(pull(prob_1, vec_logical))
+as.numeric(pull(prob_1, vec_char))
+as.numeric(pull(prob_1, vec_factor))
+```
+The logical vector was coerced into the following numeric vector: (1 1 0 0 0 0 0 0) because "true" corresponds to 1 and "false" corresponds to 0 in R. The character vector was coerced into eight NA's because R does not convert characters to real numbers. The factor vector was coerced into the following numeric vector: (1 1 1 2 2 2 3 3), which extracted the number from the character statements in the arguments of the factor vector - "level1" was coerced to "1", "level2" was coerced to "2", etc. This explains why we were able to take the mean of the logical vector and unable to take the mean of the character vector. However, we were unable to take the mean of the factor vector even though it could be coerced. 
+
+# Problem 2
+
+We are creating a new data-frame composed of different types of vectors. 
+
+``` {r data_frame_3}
+
+prob_2 = tibble (
+  x = rnorm (500),
+  y = rnorm (500),
+  new_vec_logic = x + y > 1,
+  as.numeric(new_vec_logic), 
+  as.factor(new_vec_logic)
+)
+
+```
+
+
+
+
+
