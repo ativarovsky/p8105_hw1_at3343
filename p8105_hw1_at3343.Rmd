@@ -35,11 +35,12 @@ as.numeric(pull(prob_1, vec_logical))
 as.numeric(pull(prob_1, vec_char))
 as.numeric(pull(prob_1, vec_factor))
 ```
-The logical vector was coerced into the following numeric vector: (1 1 0 0 0 0 0 0) because "true" corresponds to 1 and "false" corresponds to 0 in R. The character vector was coerced into eight NA's because R does not convert characters to real numbers. The factor vector was coerced into the following numeric vector: (1 1 1 2 2 2 3 3), which extracted the number from the character statements in the arguments of the factor vector - "level1" was coerced to "1", "level2" was coerced to "2", etc. This explains why we were able to take the mean of the logical vector and unable to take the mean of the character vector. However, we were unable to take the mean of the factor vector even though it could be coerced. 
+The logical vector was coerced into the following numeric vector: (1 1 0 0 0 0 0 0) because "true" corresponds to 1 and "false" corresponds to 0 in R. The character vector was coerced into eight NA's because R does not convert characters to real numbers. The factor vector was coerced into the following numeric vector: (1 1 1 2 2 2 3 3), which appears to have extracted the number from the character statements in the arguments of the factor vector - "level1" was coerced to "1", "level2" was coerced to "2", etc. This explains why we were able to take the mean of the logical vector and unable to take the mean of the character vector. However, we were unable to take the mean of the factor vector even though it could be coerced. 
 
 # Problem 2
 
-We are creating a new data-frame composed of different types of vectors. 
+## Creating a New Data Frame
+We are creating a new data frame composed of different types of vectors. 
 
 ``` {r data_frame_3}
 
@@ -47,13 +48,26 @@ prob_2 = tibble (
   x = rnorm (500),
   y = rnorm (500),
   new_vec_logic = x + y > 1,
-  as.numeric(new_vec_logic), 
-  as.factor(new_vec_logic)
+  num_vec = as.numeric(new_vec_logic), 
+  fac_vec = as.factor(new_vec_logic)
 )
 
 ```
+## Quantifying the Data Frame
 
+The size of this dataset is `r nrow(prob_2)` rows by `r ncol(prob_2)` columns. 
+The mean of x is `r mean(pull(prob_2,x))`. The median of x is `r median(pull(prob_2,x))`. The standard deviation of x is `r sd(pull(prob_2,x))`. 
+The proportion of cases for which x+y > 1 is `r sum(pull(prob_2, new_vec_logic))/500`.
 
+### Creating a Scatter Plot of the Data Frame
+
+We are creating a scatterplot of y vs x. 
+
+```{r data_frame_4}
+
+ggplot(prob_2, aes(x=x, y=y, color= new_vec_logic)) + geom_point()
+
+```
 
 
 
