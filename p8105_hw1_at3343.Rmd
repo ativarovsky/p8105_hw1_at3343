@@ -61,7 +61,7 @@ The proportion of cases for which x+y > 1 is `r sum(pull(prob_2, new_vec_logic))
 
 ### Creating a Scatter Plot of the Data Frame
 
-We are creating a scatterplot of y vs x. 
+We are creating a scatterplot of y vs x, assigning one of two colors to each point based on the outcome of the logcial vector new_vec_logic. 
 
 ```{r data_frame_4}
 
@@ -69,5 +69,19 @@ ggplot(prob_2, aes(x=x, y=y, color= new_vec_logic)) + geom_point()
 
 ```
 
+We are now creating a scatterplot of y vs x, assigning one of two colors to each point based on the value of vector "num_vec", which coereced the logical vector "new_vec_logic" into 0's and 1's. 
+
+```{r data_frame_5}
+
+ggplot(prob_2, aes(x=x, y=y, color= num_vec)) + geom_point()
+
+```
 
 
+Finally, we are creating a scatterplot of y vs x, assigning one of two colors to each point based on the value of vector "fac_vec", which coerced the logical vector into to factor vector. 
+
+```{r data_frame_6}
+
+ggplot(prob_2, aes(x=x, y=y, color= fac_vec)) + geom_point()
+
+```
