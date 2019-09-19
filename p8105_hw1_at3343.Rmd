@@ -89,6 +89,11 @@ Finally, we are creating a scatterplot of y vs x, assigning one of two colors to
 
 ```{r data_frame_6}
 
-ggplot(prob_2, aes(x=x, y=y, color= fac_vec)) + geom_point()
+ggplot(prob_2, aes(x = x, y = y, color = fac_vec)) + geom_point()
+
+```
+
+```{r}
+ggsave("factor_vector.png", plot = last_plot())
 
 ```
