@@ -37,6 +37,13 @@ as.numeric(pull(prob_1, vec_factor))
 ```
 The logical vector was coerced into the following numeric vector: (1 1 0 0 0 0 0 0) because "true" corresponds to 1 and "false" corresponds to 0 in R. The character vector was coerced into eight NA's because R does not convert characters to real numbers. The factor vector was coerced into the following numeric vector: (1 1 1 2 2 2 3 3), which appears to have extracted the number from the character statements in the arguments of the factor vector - "level1" was coerced to "1", "level2" was coerced to "2", etc. This explains why we were able to take the mean of the logical vector and unable to take the mean of the character vector. However, we were unable to take the mean of the factor vector even though it could be coerced. 
 
+```{r}
+as.numeric(pull(prob_1, vec_logical))*pull(prob_1, vec_samp)
+as.factor(pull(prob_1, vec_logical))*pull(prob_1, vec_samp)
+as.numeric(as.factor(pull(prob_1, vec_logical)))*pull(prob_1, vec_samp)
+```
+
+
 # Problem 2
 
 ## Creating a New Data Frame
