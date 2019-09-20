@@ -7,11 +7,17 @@ output: github_document
 
 # Problem 1
 
-We are creating a dataframe composed of a sample vector, logical vector, character vector, and factor vector. 
+## Creating dataframe
 
-```{r data_frame_hw}
+We are creating a dataframe composed of: a random sample of size 8 from a standard Normal distribution, a logical vector indicating whether elements of the sample are greater than 0, a character vector of length 8, and a factor vector of length 8, with 3 different factor “levels”
+
+```{r data_frame_1}
 library(tidyverse)
 
+# Set a seed for reproducibility
+set.seed(123)
+
+# Put the specified vectors into a tibble
 prob_1 = tibble(
   vec_samp = rnorm(8),
   vec_logical = vec_samp > 0,
@@ -19,13 +25,16 @@ prob_1 = tibble(
   vec_factor = factor(c("level1", "level1", "level1", "level2", "level2", "level2", "level3", "level3"))
 )
 
+# Now, we take the mean of each variable to see what works/doesn't
 mean(pull(prob_1, vec_samp))
 mean(pull(prob_1, vec_logical))
 mean(pull(prob_1, vec_char))
 mean(pull(prob_1, vec_factor))
 ```
 
-Taking the mean for the numeric vector and logical vector returns results. Taking the mean for the character vector and the factor vector returns errors. 
+Taking the mean for the numeric vector and logical vector returns results. Taking the mean for the character vector and the factor vector returns errors because they are not numeric in nature. 
+
+## Coercing vectors into numeric form
 
 
 This is a second code chunk for problem 1. It coerces the  logical, character, and factor vectors to numeric vectors:
@@ -35,21 +44,32 @@ as.numeric(pull(prob_1, vec_logical))
 as.numeric(pull(prob_1, vec_char))
 as.numeric(pull(prob_1, vec_factor))
 ```
-The logical vector was coerced into the following numeric vector: (1 1 0 0 0 0 0 0) because "true" corresponds to 1 and "false" corresponds to 0 in R. The character vector was coerced into eight NA's because R does not convert characters to real numbers. The factor vector was coerced into the following numeric vector: (1 1 1 2 2 2 3 3), which appears to have extracted the number from the character statements in the arguments of the factor vector - "level1" was coerced to "1", "level2" was coerced to "2", etc. This explains why we were able to take the mean of the logical vector and unable to take the mean of the character vector. However, we were unable to take the mean of the factor vector even though it could be coerced. 
+The logical vector was coerced into the following numeric vector: (1 1 0 0 0 0 0 0) because "true" corresponds to 1 and "false" corresponds to 0 in R. The character vector was coerced into eight NA's because R does not convert characters to real numbers. The factor vector was coerced into the following numeric vector: (1 1 1 2 2 2 3 3), which appears to have assigned numbers to each category, in increasing order. This explains why we were able to take the mean of the logical vector and unable to take the mean of the character vector. However, we were unable to take the mean of the factor vector even though it could be coerced. 
 
-```{r}
+## Converting the logical vector
+
+Finally, we convert the logical vector to numeric and character forms and attempt to multiply the converted vector by the ranom sample vector "vec_samp" defined in "prob_1."
+
+```{r data_frame_3}
 as.numeric(pull(prob_1, vec_logical))*pull(prob_1, vec_samp)
 as.factor(pull(prob_1, vec_logical))*pull(prob_1, vec_samp)
 as.numeric(as.factor(pull(prob_1, vec_logical)))*pull(prob_1, vec_samp)
 ```
 
+This results in numeric vectors for the first and third expression and an NA vector for the second expression. This occurs because the second expression multiplies a factor vector by a number vector, which is impossible unless the factor vector is first coerced into a numeric vector. 
 
 # Problem 2
 
 ## Creating a New Data Frame
-We are creating a new data frame composed of different types of vectors. 
 
-``` {r data_frame_3}
+We are creating a new data frame comprised of
+x: a random sample of size 500 from a standard Normal distribution
+y: a random sample of size 500 from a standard Normal distribution
+A logical vector indicating whether x + y > 1
+A numeric vector created by coercing the above logical vector
+A factor vector created by coercing the above logical vector
+
+``` {r data_frame_4}
 
 prob_2 = tibble (
   x = rnorm (500),
@@ -60,40 +80,32 @@ prob_2 = tibble (
 )
 
 ```
+
 ## Quantifying the Data Frame
 
 The size of this dataset is `r nrow(prob_2)` rows by `r ncol(prob_2)` columns. 
 The mean of x is `r mean(pull(prob_2,x))`. The median of x is `r median(pull(prob_2,x))`. The standard deviation of x is `r sd(pull(prob_2,x))`. 
 The proportion of cases for which x+y > 1 is `r sum(pull(prob_2, new_vec_logic))/500`.
 
-### Creating a Scatter Plot of the Data Frame
+## Creating Scatterplots
 
-We are creating a scatterplot of y vs x, assigning one of two colors to each point based on the outcome of the logcial vector new_vec_logic. 
+We first create a scatterplot of y vs x, assigning one of two colors to each point based on the outcome of the logcial vector new_vec_logic. 
 
-```{r data_frame_4}
+We then create a scatterplot of y vs x, assigning one of two colors to each point based on the value of vector "num_vec", which coereced the logical vector "new_vec_logic" into 0's and 1's. 
 
-ggplot(prob_2, aes(x=x, y=y, color= new_vec_logic)) + geom_point()
+Finally, we create a scatterplot of y vs x, assigning one of two colors to each point based on the value of vector "fac_vec", which coerced the logical vector into to factor vector. 
 
-```
-
-We are now creating a scatterplot of y vs x, assigning one of two colors to each point based on the value of vector "num_vec", which coereced the logical vector "new_vec_logic" into 0's and 1's. 
+We assign a name to the first plot and save it as "plot_1.png". 
 
 ```{r data_frame_5}
 
-ggplot(prob_2, aes(x=x, y=y, color= num_vec)) + geom_point()
+plot_1 = ggplot(prob_2, aes(x = x, y = y, color = new_vec_logic)) + geom_point()
+plot_1
 
-```
-
-
-Finally, we are creating a scatterplot of y vs x, assigning one of two colors to each point based on the value of vector "fac_vec", which coerced the logical vector into to factor vector. 
-
-```{r data_frame_6}
+ggplot(prob_2, aes(x = x, y = y, color = num_vec)) + geom_point()
 
 ggplot(prob_2, aes(x = x, y = y, color = fac_vec)) + geom_point()
 
-```
-
-```{r}
-ggsave("factor_vector.png", plot = last_plot())
+ggsave("plot_1.png", plot = plot_1)
 
 ```
